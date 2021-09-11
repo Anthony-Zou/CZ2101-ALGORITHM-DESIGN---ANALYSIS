@@ -1,7 +1,8 @@
 package dijkstra;
+
 import java.util.LinkedList;
 
-class DijkstraUsingMinHeap {
+public class DijkstraUsingMinHeap {
     static class Edge {
         int source;
         int destination;
@@ -123,7 +124,7 @@ class DijkstraUsingMinHeap {
             indexes = new int[capacity];
             mH[0] = new HeapNode();
             mH[0].distance = Integer.MIN_VALUE;
-            mH[0].vertex-=  1;
+            mH[0].vertex=-1;
             currentSize = 0;
         }
 
@@ -211,9 +212,13 @@ class DijkstraUsingMinHeap {
         int vertices = 6;
         Graph graph = new Graph(vertices);
         int sourceVertex = 0;
-        RandomEdge edge = new RandomEdge(6);
-
-        graph.addEdge(edge.source, edge.destination, edge.weight);
+        graph.addEdge(0, 1, 4);
+        graph.addEdge(0, 2, 3);
+        graph.addEdge(1, 2, 1);
+        graph.addEdge(1, 3, 2);
+        graph.addEdge(2, 3, 4);
+        graph.addEdge(3, 4, 2);
+        graph.addEdge(4, 5, 6);
         graph.dijkstra_GetMinDistances(sourceVertex);
     }
 }

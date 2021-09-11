@@ -1,10 +1,11 @@
 package dijkstra;
+
 import javafx.util.Pair;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
-public class b {
+public class DijkstraPQ {
     static class Edge {
         int source;
         int destination;
@@ -56,7 +57,6 @@ public class b {
                     //sort using distance values
                     int key1 = p1.getKey();
                     int key2 = p2.getKey();
-
                     return key1-key2;
                 }
             });
