@@ -67,7 +67,15 @@ public class a {
         }
         //printMinPath(V, path_array);
     }
-
+    public static int minDistance(int V, int path_array[], Boolean sptSet[])   {
+        int min = Integer.MAX_VALUE, min_index = -1;
+        for (int i = 0; i < V; i++)
+            if (!sptSet[i] && path_array[i] <= min) {
+                min = path_array[i];
+                min_index = i;
+            }
+        return min_index;
+    }
     public static void printMinPath(int V, int path_array[])   {
         System.out.println("Vertex# \t Minimum Distance from Source");
         for (int i = 0; i < V; i++){
@@ -78,15 +86,7 @@ public class a {
         }
     }
 
-    public static int minDistance(int V, int path_array[], Boolean sptSet[])   {
-        int min = Integer.MAX_VALUE, min_index = -1;
-        for (int i = 0; i < V; i++)
-            if (!sptSet[i] && path_array[i] <= min) {
-                min = path_array[i];
-                min_index = i;
-            }
-        return min_index;
-    }
+
 }
 
 class GraphMatrix{

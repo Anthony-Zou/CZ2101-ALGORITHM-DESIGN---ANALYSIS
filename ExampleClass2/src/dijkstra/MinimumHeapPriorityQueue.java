@@ -129,7 +129,7 @@ class MinimumHeapPriorityQueue {
        // System.out.println(extractMin(A));
       //  System.out.println("");
 
-        //printHeap(A);
+        printHeap(A);
 
         System.out.println(extractMin(A));
         System.out.println(extractMin(A));

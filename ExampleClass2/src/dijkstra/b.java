@@ -1,5 +1,7 @@
 package dijkstra;
+
 import javafx.util.Pair;
+
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
@@ -25,7 +27,7 @@ public class b {
             this.vertices = vertices;
             adjacencylist = new LinkedList[vertices];
             //initialize adjacency lists for all the vertices
-            for (int i = 0; i <vertices ; i++) {
+            for (int i = 0; i < vertices; i++) {
                 adjacencylist[i] = new LinkedList<>();
             }
         }
@@ -38,42 +40,48 @@ public class b {
             adjacencylist[destination].addFirst(edge); //for undirected graph
         }
 
-        public void dijkstra_GetMinDistances(int sourceVertex){
+        public void addRandomEdge(int v) {
+            RandomEdge edge = new RandomEdge(v);
+
+            addEdge(edge.source, edge.destination, edge.weight);
+        }
+
+        public void dijkstra_GetMinDistances(int sourceVertex) {
 
             boolean[] SPT = new boolean[vertices];
             //distance used to store the distance of vertex from a source
-            int [] distance = new int[vertices];
+            int[] distance = new int[vertices];
 
             //Initialize all the distance to infinity
-            for (int i = 0; i <vertices ; i++) {
+            for (int i = 0; i < vertices; i++) {
                 distance[i] = Integer.MAX_VALUE;
             }
             //Initialize priority queue
             //override the comparator to do the sorting based keys
-            PriorityQueue<Pair<Integer, Integer>> pq = new PriorityQueue<>(vertices, new Comparator<Pair<Integer, Integer>>() {
+            PriorityQueue<Pair<Integer, Integer>> pq = new PriorityQueue<>
+                    (vertices, new Comparator<Pair<Integer, Integer>>() {
                 @Override
                 public int compare(Pair<Integer, Integer> p1, Pair<Integer, Integer> p2) {
                     //sort using distance values
                     int key1 = p1.getKey();
                     int key2 = p2.getKey();
-
-                    return key1-key2;
+                    return key1 - key2;
                 }
             });
             //create the pair for for the first index, 0 distance 0 index
             distance[0] = 0;
-            Pair<Integer, Integer> p0 = new Pair<>(distance[0],0);
+            Pair<Integer, Integer> p0 = new Pair<>(distance[0], 0);
             //add it to pq
             pq.offer(p0);
 
             //while priority queue is not empty
-            while(!pq.isEmpty()){
+            while (!pq.isEmpty()) {
                 //extract the min
                 Pair<Integer, Integer> extractedPair = pq.poll();
 
                 //extracted vertex
                 int extractedVertex = extractedPair.getValue();
-                if(SPT[extractedVertex]==false) {
+                if (SPT[extractedVertex] == false) {
                     SPT[extractedVertex] = true;
 
                     //iterate through all the adjacent vertices and update the keys
@@ -86,9 +94,9 @@ public class b {
                             ///check if distance needs an update or not
                             //means check total weight from source to vertex_V is less than
                             //the current distance value, if yes then update the distance
-                            int newKey = distance[extractedVertex] + edge.weight ;
+                            int newKey = distance[extractedVertex] + edge.weight;
                             int currentKey = distance[destination];
-                            if(currentKey>newKey){
+                            if (currentKey > newKey) {
                                 Pair<Integer, Integer> p = new Pair<>(newKey, destination);
                                 pq.offer(p);
                                 distance[destination] = newKey;
@@ -98,28 +106,59 @@ public class b {
                 }
             }
             //print Shortest Path Tree
-            printDijkstra(distance, sourceVertex);
+            // printDijkstra(distance, sourceVertex);
         }
 
-        public void printDijkstra(int[] distance, int sourceVertex){
+        public void printDijkstra(int[] distance, int sourceVertex) {
             System.out.println("Dijkstra Algorithm: (Adjacency List + Priority Queue)");
-            for (int i = 0; i <vertices ; i++) {
-                System.out.println("Source Vertex: " + sourceVertex + " to vertex " + + i +
+            for (int i = 0; i < vertices; i++) {
+                System.out.println("Source Vertex: " + sourceVertex + " to vertex " + +i +
                         " distance: " + distance[i]);
             }
         }
 
-        public static void main(String[] args) {
-            int vertices = 6;
-            Graph graph = new Graph(vertices);
-            graph.addEdge(0, 1, 4);
-            graph.addEdge(0, 2, 3);
-            graph.addEdge(1, 2, 1);
-            graph.addEdge(1, 3, 2);
-            graph.addEdge(2, 3, 4);
-            graph.addEdge(3, 4, 2);
-            graph.addEdge(4, 5, 6);
+        // Average CPU time for a number of Dijkstra function calls in MS
+        public static long[] ListCPUPerformance(int[][] test, int cases, int runs) {
+            int V;
+            int EPercent;
+            long[] result = new long[cases];
+            long time = 0;
+            for (int i = 0; i < cases; i++) {
+                for (int j = 0; j < runs; j++) {
+                    time += ListCPUTime(test[i][0]);
+                }
+                result[i] = time / runs;
+            }
+            return result;
+        }
+
+        public static long ListCPUTime(int V ) {
+            Graph graph = new Graph(V);
+            for (int i = 0; i < V*V*0.5; i++) {
+                graph.addRandomEdge(V);
+            }
+            long start = System.nanoTime();
             graph.dijkstra_GetMinDistances(0);
+
+            long time = (System.nanoTime() - start) / 1000;
+            return time;
+        }
+
+        public static void main(String[] args) {
+            int V = 10;
+            int EPercent = 200;
+            int cases = 10;
+            int runs = 100;
+            int[][] test0 = new int[][]{{100}, {200}, {300}, {400}, {500},
+                    {600}, {700}, {800}, {900}, {1000}
+                    //,{2000}, {3000}, {4000}, {5000}, {6000},
+                    //{7000}, {8000}, {9000}, {10000}
+            };
+            long time[] = ListCPUPerformance(test0, cases, runs);
+//        System.out.println(MatrixCPUTime(V,EPercent));
+            for (int i = 0; i < time.length; i++) {
+                System.out.println("V = " + test0[i][0] + ", time = " + time[i]);
+            }
         }
     }
 }
